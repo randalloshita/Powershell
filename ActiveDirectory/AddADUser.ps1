@@ -6,6 +6,10 @@ Write-host "Welcome. Create AD users here. This module only creates new accounts
 
 $Credential = Get-Credential
 
+#Initials
+Write-host "Enter your initials for checkmarking:"
+$Initials = Read-Host
+
 #Get files info
 $EmployeeChecklistFolder = "P:\EMPLOYEE CHECKLIST\Z_Pending"
 
@@ -74,9 +78,10 @@ $ADUser = Invoke-Command -ComputerName PCBDC1 -Credential $Credential -Scriptblo
 $ADUserHomeDirectory = $ADUser.HomeDirectory
 
 #Create Home Directory and apply permissions
-New-Item -Path $ADUserHomeDirectory -Type directory
+New-Item -Path $ADUserHomeDirectory -Type directory -Credential $Credential
 New-SmbShare -Name $SamAccountName -Path $ADUserHomeDirectory -FullAccess "Everyone"
 #perissions
+Set-ACL -Path $ADUserHomeDirectory 
 
 #Create mailbox
 Write-host "Do you want to create a mailbox? [Y] Yes, [N] No."
@@ -101,10 +106,10 @@ $Worksheet = $Excel.Workbook.Worksheets["Employee Checklist (For IT)"]
 $Worksheet.Cells['C11'].Value = $SamAccountName 
 $Worksheet.Cells['C14'].Value = $SameAccountName + '@paccitybank.com'
 $Worksheet.Cells['C15'].Value = $ADUserHomeDirectory
-$Worksheet.Cells['J11'].Value = 'RO'
-$Worksheet.Cells['J12'].Value = 'RO'
-$Worksheet.Cells['J14'].Value = 'RO'
-$Worksheet.Cells['J15'].Value = 'RO'
+$Worksheet.Cells['J11'].Value = $Initials
+$Worksheet.Cells['J12'].Value = $Initials
+$Worksheet.Cells['J14'].Value = $Initials
+$Worksheet.Cells['J15'].Value = $Initials
 
 
 
