@@ -1,0 +1,6 @@
+If you define a variable outside a script block it’s by default invisible inside the script block.
+$USING
+
+https://powershell.org/forums/topic/invoke-command-scriptblock-variables/
+
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_script_blocks?view=powershell-6
